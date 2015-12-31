@@ -75,37 +75,18 @@ var Login = React.createClass({
   onLoginPressed: function(){
     console.log('Attempting to log in with username '+this.state.username)
     this.setState({showProgress:true});
-    var b= new buffer.Buffer(this.state.username + ':' + this.state.password);
-    var encodedAuth = b.toString('base64')
 
-    fetch('https://api.github.com/user',{
-      headers: {
-        'Authorization' : 'Basic ' + encodedAuth
+    var authService = require('./AuthService')
+    authService.login({
+      username: this.state.username,
+      password: this.state.password
+    },(results)=>{
+      this.setState(Object.assign({
+        showProgress:false
+      },results));
+      if(results.success&&this.props.onLogin){
+        this.props.onLogin();
       }
-    })
-    .then((response)=>{
-      if (response.status>=200 && response.status<300) {
-        return response
-      }
-
-      throw {
-        badCredentials: response.status==401,
-        unknownError: response.status!=401
-      }
-    })
-    .then((response)=>{
-      return response.json();
-    })
-    .then((results)=>{
-      console.log(results)
-      this.setState({showProgress: false})
-      this.setState({success:true})
-    })
-    .catch((err)=>{
-      this.setState(err)
-    })
-    .finally(()=>{
-      this.setState({showProgress: false})
     });
   }
 })
