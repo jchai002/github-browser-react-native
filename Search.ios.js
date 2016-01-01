@@ -27,7 +27,7 @@ class Search extends Component {
       <TextInput
         onChangeText={(text)=>this.setState({searchQuery:text})}
         style={styles.input}
-        placeholder="Search Query"
+        placeholder="Search for a repo"
         />
 
       <TouchableHighlight

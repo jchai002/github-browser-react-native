@@ -1,98 +1,128 @@
 'use strict';
 
 var React = require('react-native');
-var buffer = require('buffer');
-
+var AuthService=require('./AuthService')
+var moment= require('moment')
 var {
   AppRegistry,
   StyleSheet,
   Text,
   View,
   Image,
-  TextInput,
-  TouchableHighlight,
-  ActivityIndicatorIOS
+  Component
 } = React;
-var AuthService=require('./AuthService')
 
-var Account = React.createClass({
-  getInitialState: function(){
-    return {
 
+class Account extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      userInfo:''
     }
-  },
-  render: function(){
+  }
+  render(){
       return (
         <View style={styles.container}>
-          <TouchableHighlight
-            onPress={this.onLogoutPressed}
-            style={styles.button}>
-            <Text style={styles.buttonText}>Logout</Text>
-          </TouchableHighlight>
-        </View>
+          <Image
+            source={{uri: this.state.userInfo.avatar_url}}
+            style={{
+              height:200,
+              width:200,
+              borderRadius: 100
+            }}
+            />
+
+            <View style={{
+                alignItems: 'center'
+                }}>
+            <Text style={styles.large}>
+              <Text style={styles.bold}>{this.state.userInfo.name}</Text>
+            </Text>
+
+            <Text>
+              <Text style={styles.username}>{this.state.userInfo.login}</Text>
+            </Text>
+
+            <View style={styles.detailCell}>
+              <Image source={require('image!mail')}
+                style={styles.detailCellIcon}/>
+              <Text style={styles.detailCellLabel}>
+                <Text>{this.state.userInfo.email}</Text>
+              </Text>
+            </View>
+
+            <View style={styles.detailCell}>
+              <Image source={require('image!location')}
+                style={styles.detailCellIcon}/>
+              <Text style={styles.detailCellLabel}>
+                <Text>{this.state.userInfo.location}</Text>
+              </Text>
+            </View>
+
+            <View style={styles.detailCell}>
+              <Image source={require('image!link')}
+                style={styles.detailCellIcon}/>
+              <Text style={styles.detailCellLabel}>
+                <Text>{this.state.userInfo.blog}</Text>
+              </Text>
+            </View>
+
+            <Text style={styles.large}>
+              Member Since: <Text style={styles.bold}>{moment(this.state.userInfo.created_at).format("MMMM Do YYYY")}</Text>
+            </Text>
+
+            <Text style={styles.large}>
+              Most Recent Activity: <Text style={styles.bold}>{moment(this.state.userInfo.updated_at).fromNow()}</Text>
+            </Text>
+
+          </View>
+
+      </View>
       );
-  },
-  onLogoutPressed: function(){
-    AuthService.logout()
-    this.props.navigator.replace([{name: 'index'}])
-  },
-  componentDidMount: function(){
+  }
+  componentDidMount(){
     AuthService.getAuthInfo((err,authInfo)=>{
       if (err){
         console.log(err)
       }
-      console.log(authInfo)
+      this.setState({
+        userInfo:authInfo.header.user
+      })
+      console.log(this.state)
     })
   }
-})
+}
 
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop:40,
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-    padding: 10
+    paddingTop:100,
+    justifyContent:'flex-start',
+    alignItems: 'center'
   },
-  logo: {
-    width: 66,
-    height: 55
-  },
-  heading: {
-    fontSize: 30,
-    marginTop:10
-  },
-  input: {
-    height: 50,
-    margin: 10,
-    padding: 4,
-    fontSize: 18,
-    borderWidth: 1,
-    borderColor:'#48bbec',
-    borderRadius: 5
-  },
-  button: {
-    height: 50,
-    backgroundColor: '#48BBEC',
-    alignSelf: 'stretch',
-    margin: 10,
-    borderRadius: 5,
-    justifyContent: 'center'
-  },
-  buttonText: {
-    fontSize: 22,
-    color: '#FFF',
-    alignSelf: 'center'
-  },
-  loader: {
-    marginTop: 20
-  },
-  error: {
-    color: 'red',
+  large: {
+    fontSize: 20,
     paddingTop: 10
+  },
+  bold: {
+    fontWeight: 'bold'
+  },
+  username: {
+    color: 'gray'
+  },
+  detailCell: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    paddingTop: 5
+  },
+  detailCellIcon: {
+    width: 20,
+    height: 20
+  },
+  detailCellLabel: {
+    textAlign: 'center',
+    paddingLeft: 5
   }
 });
 
 module.exports = Account
-
-AppRegistry.registerComponent('Account', () => Account);

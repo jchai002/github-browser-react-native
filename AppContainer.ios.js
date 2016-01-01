@@ -36,7 +36,7 @@ class AppContainer extends Component {
             style={styles.wrapper}
             initialRoute={{
               component: Feed,
-              title: 'Feed'
+              title: 'New Activity Feed'
             }}
           />
         </TabBarIOS.Item>

@@ -10,8 +10,7 @@ var {
   StyleSheet,
   Text,
   View,
-  ActivityIndicatorIOS,
-  NavigatorIOS
+  ActivityIndicatorIOS
 } = React;
 
 var Login= require('./Login')
@@ -49,7 +48,7 @@ var GithubBrowser = React.createClass({
     }
     if(this.state.isLoggedIn){
       return (
-          <AppContainer />
+        <AppContainer />
       )
     }else{
     return (
