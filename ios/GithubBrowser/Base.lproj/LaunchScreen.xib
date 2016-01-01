@@ -24,9 +24,6 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="OctocatLaunch" translatesAutoresizingMaskIntoConstraints="NO" id="D4K-m1-39b">
-                    <rect key="frame" x="112" y="179" width="256" height="256"/>
-                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
@@ -42,7 +39,4 @@
             <point key="canvasLocation" x="548" y="455"/>
         </view>
     </objects>
-    <resources>
-        <image name="OctocatLaunch" width="256" height="256"/>
-    </resources>
 </document>
