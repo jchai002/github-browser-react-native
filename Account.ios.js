@@ -1,8 +1,11 @@
 'use strict';
 
 var React = require('react-native');
-var AuthService=require('./AuthService')
-var moment= require('moment')
+var AuthService=require('./AuthService');
+var Index = require('./index');
+
+var moment= require('moment');
+
 var {
   AppRegistry,
   StyleSheet,
@@ -74,9 +77,7 @@ class Account extends Component {
             <Text style={styles.large}>
               Most Recent Activity: <Text style={styles.bold}>{moment(this.state.userInfo.updated_at).fromNow()}</Text>
             </Text>
-
           </View>
-
       </View>
       );
   }
@@ -88,9 +89,9 @@ class Account extends Component {
       this.setState({
         userInfo:authInfo.header.user
       })
-      console.log(this.state)
     })
   }
+
 }
 
 var styles = StyleSheet.create({
