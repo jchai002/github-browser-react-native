@@ -6,8 +6,13 @@ var {
   Text,
   Component,
   StyleSheet,
-  TabBarIOS
+  TabBarIOS,
+  NavigatorIOS
 } = React;
+
+var Feed= require('./Feed')
+var Search=require('./Search')
+var Account=require('./Account')
 
 class AppContainer extends Component {
   constructor(props){
@@ -27,7 +32,13 @@ class AppContainer extends Component {
           icon={require('image!feed')}
           onPress={()=>this.setState({selectedTab:'feed'})}
           >
-          <Text style={styles.welcome}>Tab 1</Text>
+          <NavigatorIOS
+            style={styles.wrapper}
+            initialRoute={{
+              component: Feed,
+              title: 'Feed'
+            }}
+          />
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="Search"
@@ -35,7 +46,27 @@ class AppContainer extends Component {
           icon={require('image!search')}
           onPress={()=>this.setState({selectedTab:'search'})}
           >
-          <Text style={styles.welcome}>Tab 2</Text>
+          <NavigatorIOS
+            style={styles.wrapper}
+            initialRoute={{
+              component: Search,
+              title: 'Search'
+            }}
+          />
+        </TabBarIOS.Item>
+        <TabBarIOS.Item
+          title="Account"
+          selected={this.state.selectedTab== 'account'}
+          icon={require('image!account')}
+          onPress={()=>this.setState({selectedTab:'account'})}
+          >
+          <NavigatorIOS
+            style={styles.wrapper}
+            initialRoute={{
+              component: Account,
+              title: 'My Account'
+            }}
+          />
         </TabBarIOS.Item>
       </TabBarIOS>
     )
@@ -53,6 +84,9 @@ var styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+  },
+  wrapper: {
+  flex: 1
   }
 });
 

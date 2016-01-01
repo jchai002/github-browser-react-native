@@ -109,7 +109,7 @@ var styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    margin: 5,
+    margin: 10,
     padding: 4,
     fontSize: 18,
     borderWidth: 1,
@@ -120,7 +120,8 @@ var styles = StyleSheet.create({
     height: 50,
     backgroundColor: '#48BBEC',
     alignSelf: 'stretch',
-    marginTop:10,
+    margin: 10,
+    borderRadius: 5,
     justifyContent: 'center'
   },
   buttonText: {

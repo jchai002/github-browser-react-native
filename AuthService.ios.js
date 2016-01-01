@@ -68,7 +68,10 @@ class AuthService {
     .catch((err)=>{
       return cb(err)
     })
+  }
 
+  logout(){
+    AsyncStorage.multiRemove([authKey,userKey])
   }
 }
 

@@ -12,6 +12,8 @@ var {
   StyleSheet
 } = React;
 
+var RepoDetails = require('./RepoDetails');
+
 class SearchResults extends Component {
   constructor(props){
     super(props);
@@ -21,13 +23,16 @@ class SearchResults extends Component {
     this.state = {
       dataSource: ds,
       showProgress: true,
-      searchQuery: props.searchQuery,
-      repositories: ''
+      searchQuery: props.searchQuery
     }
   }
 
   componentDidMount(){
     this.doSearch();
+  }
+
+  componentDidUpdate(){
+    console.log(this.state)
   }
 
   doSearch(){
@@ -36,9 +41,8 @@ class SearchResults extends Component {
     fetch(url)
       .then((response)=>response.json())
       .then((response)=>{
-        console.log(response.repositories)
+        console.log(response.items)
         this.setState({
-          repositories: response.repositories,
           dataSource: this.state.dataSource.cloneWithRows(response.items)
         });
       })
@@ -49,11 +53,21 @@ class SearchResults extends Component {
       })
   }
 
+  pressRow(rowData,repoName){
+    this.props.navigator.push({
+      title: repoName,
+      component: RepoDetails,
+      passProps: {
+        repoDetails: rowData
+      }
+    })
+  }
 
   renderRow(rowData){
     return (
       <TouchableHighlight
         underlayColor='#ddd'
+        onPress={()=>this.pressRow(rowData,rowData.full_name)}
       >
         <View style={{
           flex:1,

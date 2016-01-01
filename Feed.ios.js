@@ -7,10 +7,11 @@ var {
   Component,
   ListView,
   ActivityIndicatorIOS,
-  Image
+  Image,
+  TouchableHighlight
 } = React;
 var moment= require('moment')
-
+var PushPayload=require('./PushPayload')
 class Feed extends Component {
   constructor(props){
     super(props);
@@ -38,7 +39,6 @@ class Feed extends Component {
       .then((response)=>response.json())
       .then((responseData)=>{
         var feedItems = responseData.filter((ev)=> ev.type=='PushEvent');
-        console.log(feedItems)
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows(feedItems),
           showProgress: false
@@ -47,33 +47,52 @@ class Feed extends Component {
     });
   }
 
+  pressRow(rowData){
+    this.props.navigator.push({
+      title: 'Push Event',
+      component: PushPayload,
+      passProps: {
+        pushEvent: rowData
+      }
+    })
+  }
+
   renderRow(rowData){
     return (
-      <View style={{
-        flex:1,
-        flexDirection: 'row',
-        padding:20,
-        alignItems: 'center',
-        borderColor: '#D7D7D7',
-        borderBottomWidth:1
-      }}>
-      <Image
-      source={{uri: rowData.actor.avatar_url}}
-      style={{
-        height:36,
-        width:36,
-        borderRadius:18
-      }}
-      />
+      <TouchableHighlight
+        onPress={()=>this.pressRow(rowData)}
+        underlayColor='#ddd'
+      >
         <View style={{
-          paddingLeft:20
+          flex:1,
+          flexDirection: 'row',
+          padding:20,
+          alignItems: 'center',
+          borderColor: '#D7D7D7',
+          borderBottomWidth:1
         }}>
-          <Text>{moment(rowData.created_at).fromNow()}</Text>
-          <Text>{rowData.actor.login} pushed to</Text>
-          <Text>{rowData.payload.ref.replace('refs/heads/','')}</Text>
-          <Text style={{fontWeight:'bold'}}>at {rowData.repo.name}</Text>
+        <Image
+        source={{uri: rowData.actor.avatar_url}}
+        style={{
+          height:36,
+          width:36,
+          borderRadius:18
+        }}
+        />
+          <View style={{
+            paddingLeft:20
+          }}>
+            <Text>{moment(rowData.created_at).fromNow()}</Text>
+            <Text>
+              <Text style={{fontWeight:'bold'}}>{rowData.actor.login}</Text> pushed to 
+            </Text>
+                <Text style={{fontWeight:'bold'}}>{rowData.payload.ref.replace('refs/heads/','')}</Text>
+            <Text>
+              at <Text style={{fontWeight:'bold'}}>{rowData.repo.name}</Text>
+            </Text>
+          </View>
         </View>
-      </View>
+      </TouchableHighlight>
     )
   }
 
@@ -93,7 +112,8 @@ class Feed extends Component {
     return (
         <View style={{
           flex:1,
-          justifyContent: 'flex-start'
+          justifyContent: 'flex-start',
+          marginTop:64
         }}>
           <ListView
             dataSource={this.state.dataSource}

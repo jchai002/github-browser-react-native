@@ -10,7 +10,8 @@ var {
   StyleSheet,
   Text,
   View,
-  ActivityIndicatorIOS
+  ActivityIndicatorIOS,
+  NavigatorIOS
 } = React;
 
 var Login= require('./Login')
